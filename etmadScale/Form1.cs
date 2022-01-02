@@ -24,6 +24,10 @@ namespace etmadScale
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            txtPortName.Items.Insert(0, "---انتخاب پورت ---");
+            txtPortName.SelectedIndex = 0;
+            txtBaudRate.Items.Insert(0, "---انتخاب BaudRate ---");
+            txtBaudRate.SelectedIndex = 0;
             //LoadConfigSetting();
         }
 
@@ -32,10 +36,6 @@ namespace etmadScale
            
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void label5_Click(object sender, EventArgs e)
         {
@@ -45,6 +45,8 @@ namespace etmadScale
         private void txtPortName_DropDown(object sender, EventArgs e)
         {
             txtPortName.Items.Clear();
+            txtPortName.Items.Insert(0, "---انتخاب پورت ---");
+            txtPortName.SelectedIndex = 0;
             string[] comPorts = SerialPort.GetPortNames();
             foreach (var comPort in comPorts)
             {
@@ -54,25 +56,53 @@ namespace etmadScale
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            btnConnect.Enabled = false;
-            btnDisconnect.Enabled = true;
+            if (validationInputs())
+            {
+               
+                serialConfig();
+
+                try
+                {
+                    serialPortInput.Open();
+                    if (serialPortInput.IsOpen)
+                    {
+                        btnConnect.Enabled = false;
+                        btnDisconnect.Enabled = true;
+                        btnZero.Enabled = true;
+                        btnHold.Enabled = true;
+                        ReadSerialData();
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(@"عدم توانایی اتصال به ترازو." + exception.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("لطفا موارد اجباری را انتخاب کنید ");
+            }
 
 
+        }
+
+        private void serialConfig()
+        {
             serialPortInput.PortName = txtPortName.Text;
             serialPortInput.BaudRate = int.Parse(txtBaudRate.Text);
             serialPortInput.Parity = Parity.None;
             serialPortInput.DataBits = 8;
-            serialPortInput.StopBits = StopBits.One ;
+            serialPortInput.StopBits = StopBits.One;
+        }
 
-            serialPortInput.Open();
-            if (serialPortInput.IsOpen)
+        private bool validationInputs()
+        {
+            if (txtPortName.SelectedIndex==0 || txtBaudRate.SelectedIndex==0)
             {
-                ReadSerialData();
-                btnConnect.Enabled = false;
-                btnDisconnect.Enabled = true;
+                return false;
             }
 
-
+            return true;
         }
 
         private void ReadSerialData()
@@ -94,21 +124,10 @@ namespace etmadScale
             {
                 serialPortInput.Write("s");
                 serialDataRead = serialPortInput.ReadExisting();
-                if (serialDataRead!="")
-                {
-                    serialDataRead = serialDataRead.TrimStart('0').Replace('@', '-');
-                    serialDataRead = serialDataRead.Substring(0, serialDataRead.IndexOf('M')) + " KG";
-                    showReadSerialValue(serialDataRead);
-                    if (!checkTerminal.Checked)
-                    {
-                       
-                        serialPortInput.Close();
-                        break;
-                    }
-                }
+                showReadSerialValue(serialDataRead);
                 Thread.Sleep(500);
             }
-           
+
         }
 
         public delegate void showSerialDelegate(string r);
@@ -121,8 +140,16 @@ namespace etmadScale
             }
             else
             {
-                txtshowReadData.AppendText(Environment.NewLine+ "> " + s);
-                txtshowReadData.ScrollToCaret();
+                if (s != "")
+                {
+                    var finalValue = s.TrimStart('0').Replace('@', '-');
+
+                    if (finalValue.Contains("M"))
+                        finalValue = finalValue.Substring(0, finalValue.IndexOf('M'));
+                    txtshowReadData.AppendText(Environment.NewLine + "> " + finalValue+" KG");
+                    txtshowReadData.ScrollToCaret();
+                }
+               
             }
         }
 
@@ -133,6 +160,8 @@ namespace etmadScale
             {
                 btnConnect.Enabled = true;
                 btnDisconnect.Enabled = false;
+                btnZero.Enabled = false;
+                btnHold.Enabled = false;
                 serialPortInput.Close();
                 txtshowReadData.AppendText(Environment.NewLine + ">DISCONNECTED");
                 
@@ -143,6 +172,26 @@ namespace etmadScale
         {
             txtshowReadData.Clear();
             txtshowReadData.AppendText(">TERMINAL IS CLEARED");
+        }
+
+        private void btnZero_Click(object sender, EventArgs e)
+        {
+            if (serialPortInput.IsOpen)
+            {
+                txtshowReadData.AppendText(Environment.NewLine + ">ZERO");
+                serialPortInput.Write("z");
+
+            }
+        }
+
+        private void btnHold_Click(object sender, EventArgs e)
+        {
+            if (serialPortInput.IsOpen)
+            {
+                txtshowReadData.AppendText(Environment.NewLine + ">HOLD");
+                serialPortInput.Write("h");
+
+            }
         }
     }
 }
