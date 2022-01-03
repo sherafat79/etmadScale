@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace etmadScale
@@ -28,18 +22,13 @@ namespace etmadScale
             txtPortName.SelectedIndex = 0;
             txtBaudRate.Items.Insert(0, "---انتخاب BaudRate ---");
             txtBaudRate.SelectedIndex = 0;
-            //LoadConfigSetting();
-        }
-
-        private void LoadConfigSetting()
-        {
-           
+            txtmode.SelectedIndex = 0;
         }
 
 
         private void label5_Click(object sender, EventArgs e)
         {
-
+            Process.Start("https://ptsy.ir/");
         }
 
         private void txtPortName_DropDown(object sender, EventArgs e)
@@ -68,8 +57,8 @@ namespace etmadScale
                     {
                         btnConnect.Enabled = false;
                         btnDisconnect.Enabled = true;
-                        btnZero.Enabled = true;
-                        btnHold.Enabled = true;
+                        txtPortName.Enabled = false;
+                        txtBaudRate.Enabled = false;
                         ReadSerialData();
                     }
                 }
@@ -142,12 +131,23 @@ namespace etmadScale
             {
                 if (s != "")
                 {
-                    var finalValue = s.TrimStart('0').Replace('@', '-');
+                   
+                    if (txtmode.SelectedIndex==0)
+                    {
+                        txtshowReadData.AppendText(Environment.NewLine + "> " + s);
+                        txtshowReadData.ScrollToCaret();
+                    }
+                    else
+                    {
+                        var finalValue = s.TrimStart('0').Replace('@', '-');
 
-                    if (finalValue.Contains("M"))
-                        finalValue = finalValue.Substring(0, finalValue.IndexOf('M'));
-                    txtshowReadData.AppendText(Environment.NewLine + "> " + finalValue+" KG");
-                    txtshowReadData.ScrollToCaret();
+                        if (finalValue.Contains("M"))
+                            finalValue = finalValue.Substring(0, finalValue.IndexOf('M'));
+                        string real = finalValue.Substring(0, finalValue.Length - 3);
+                        string unreal = finalValue.Substring(finalValue.Length - 3);
+                        finalValue = real + "." + unreal + " KG";
+                        lblShowData.Text = finalValue;
+                    }
                 }
                
             }
@@ -160,8 +160,8 @@ namespace etmadScale
             {
                 btnConnect.Enabled = true;
                 btnDisconnect.Enabled = false;
-                btnZero.Enabled = false;
-                btnHold.Enabled = false;
+                txtPortName.Enabled = true;
+                txtBaudRate.Enabled = true;
                 serialPortInput.Close();
                 txtshowReadData.AppendText(Environment.NewLine + ">DISCONNECTED");
                 
@@ -171,26 +171,22 @@ namespace etmadScale
         private void btnClear_Click(object sender, EventArgs e)
         {
             txtshowReadData.Clear();
+            lblShowData.Text = "----------";
             txtshowReadData.AppendText(">TERMINAL IS CLEARED");
         }
 
-        private void btnZero_Click(object sender, EventArgs e)
+        private void txtmode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (serialPortInput.IsOpen)
+            if (txtmode.SelectedIndex==1)
             {
-                txtshowReadData.AppendText(Environment.NewLine + ">ZERO");
-                serialPortInput.Write("z");
+                txtshowReadData.Visible = false;
+                lblShowData.Visible = true;
 
             }
-        }
-
-        private void btnHold_Click(object sender, EventArgs e)
-        {
-            if (serialPortInput.IsOpen)
+            else
             {
-                txtshowReadData.AppendText(Environment.NewLine + ">HOLD");
-                serialPortInput.Write("h");
-
+                txtshowReadData.Visible = true;
+                lblShowData.Visible = false;
             }
         }
     }
