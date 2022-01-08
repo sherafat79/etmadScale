@@ -23,6 +23,8 @@ namespace etmadScale
             txtBaudRate.Items.Insert(0, "---انتخاب BaudRate ---");
             txtBaudRate.SelectedIndex = 0;
             txtmode.SelectedIndex = 0;
+
+            lblVersion.Text= "version : "+ System.Windows.Forms.Application.ProductVersion;
         }
 
 
@@ -188,6 +190,11 @@ namespace etmadScale
                 txtshowReadData.Visible = true;
                 lblShowData.Visible = false;
             }
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://ptsy.ir/");
         }
     }
 }
