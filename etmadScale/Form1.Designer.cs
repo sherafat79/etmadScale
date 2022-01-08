@@ -182,6 +182,7 @@
             this.lblShowData.ForeColor = System.Drawing.Color.Red;
             this.lblShowData.Location = new System.Drawing.Point(91, 98);
             this.lblShowData.Name = "lblShowData";
+            this.lblShowData.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblShowData.Size = new System.Drawing.Size(180, 48);
             this.lblShowData.TabIndex = 17;
             this.lblShowData.Text = "----------";
@@ -190,11 +191,14 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(276, 22);
+            this.label5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.label5.Location = new System.Drawing.Point(278, 22);
             this.label5.Name = "label5";
+            this.label5.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label5.Size = new System.Drawing.Size(388, 19);
             this.label5.TabIndex = 13;
             this.label5.Text = "شرکت پیشروتک پیشگام و مجری سامانه های ردیابی و شناسنامه محصول(لیبل)";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // groupBox2
             // 
@@ -226,7 +230,7 @@
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(6, 62);
+            this.lblVersion.Location = new System.Drawing.Point(6, 66);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(42, 19);
             this.lblVersion.TabIndex = 14;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -24,7 +25,7 @@ namespace etmadScale
             txtBaudRate.SelectedIndex = 0;
             txtmode.SelectedIndex = 0;
 
-            lblVersion.Text= "version : "+ System.Windows.Forms.Application.ProductVersion;
+            lblVersion.Text = "version : " + System.Windows.Forms.Application.ProductVersion;
         }
 
 
@@ -49,7 +50,7 @@ namespace etmadScale
         {
             if (validationInputs())
             {
-               
+
                 serialConfig();
 
                 try
@@ -88,7 +89,7 @@ namespace etmadScale
 
         private bool validationInputs()
         {
-            if (txtPortName.SelectedIndex==0 || txtBaudRate.SelectedIndex==0)
+            if (txtPortName.SelectedIndex == 0 || txtBaudRate.SelectedIndex == 0)
             {
                 return false;
             }
@@ -133,31 +134,37 @@ namespace etmadScale
             {
                 if (s != "")
                 {
-                   
-                    if (txtmode.SelectedIndex==0)
+
+                    if (txtmode.SelectedIndex == 0)
                     {
                         txtshowReadData.AppendText(Environment.NewLine + "> " + s);
                         txtshowReadData.ScrollToCaret();
                     }
                     else
                     {
-                        var finalValue = s.TrimStart('0').Replace('@', '-');
-
-                        if (finalValue.Contains("M"))
-                            finalValue = finalValue.Substring(0, finalValue.IndexOf('M'));
-                        string real = finalValue.Substring(0, finalValue.Length - 3);
-                        string unreal = finalValue.Substring(finalValue.Length - 3);
-                        finalValue = real + "." + unreal + " KG";
+                        var finalValue = "unknown";
+                        if (s.Length <= 24)
+                        {
+                            finalValue = s.Replace('@', '-');
+                            if (finalValue.Contains("M"))
+                                finalValue = finalValue.Substring(0, finalValue.IndexOf('M'));
+                            if (finalValue == "")
+                                finalValue = "000.000";
+                            string real = finalValue.Substring(0, finalValue.Length - 3);
+                            real= real.All(r => r == '0')?  "0" : real.TrimStart('0');
+                            string unreal = finalValue.Substring(finalValue.Length - 3);
+                            finalValue = real + "." + unreal + " KG";
+                        }
                         lblShowData.Text = finalValue;
                     }
                 }
-               
+
             }
         }
 
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
-            
+
             if (serialPortInput.IsOpen)
             {
                 btnConnect.Enabled = true;
@@ -166,7 +173,7 @@ namespace etmadScale
                 txtBaudRate.Enabled = true;
                 serialPortInput.Close();
                 txtshowReadData.AppendText(Environment.NewLine + ">DISCONNECTED");
-                
+
             }
         }
 
@@ -179,7 +186,7 @@ namespace etmadScale
 
         private void txtmode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (txtmode.SelectedIndex==1)
+            if (txtmode.SelectedIndex == 1)
             {
                 txtshowReadData.Visible = false;
                 lblShowData.Visible = true;
