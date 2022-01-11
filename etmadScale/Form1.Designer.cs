@@ -33,6 +33,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtmode = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnDisconnect = new System.Windows.Forms.Button();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.txtBaudRate = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPortName = new System.Windows.Forms.ComboBox();
@@ -44,12 +46,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lblVersion = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
-            this.btnDisconnect = new System.Windows.Forms.Button();
-            this.btnConnect = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -94,6 +95,31 @@
             this.label3.Size = new System.Drawing.Size(74, 19);
             this.label3.TabIndex = 15;
             this.label3.Text = "حالت نمایش:";
+            // 
+            // btnDisconnect
+            // 
+            this.btnDisconnect.Enabled = false;
+            this.btnDisconnect.Image = global::etmadScale.Properties.Resources.close__2_;
+            this.btnDisconnect.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.btnDisconnect.Location = new System.Drawing.Point(145, 227);
+            this.btnDisconnect.Name = "btnDisconnect";
+            this.btnDisconnect.Size = new System.Drawing.Size(133, 37);
+            this.btnDisconnect.TabIndex = 14;
+            this.btnDisconnect.Text = "قطع اتصال";
+            this.btnDisconnect.UseVisualStyleBackColor = true;
+            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
+            // 
+            // btnConnect
+            // 
+            this.btnConnect.Image = global::etmadScale.Properties.Resources.check__2_;
+            this.btnConnect.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.btnConnect.Location = new System.Drawing.Point(6, 227);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(127, 37);
+            this.btnConnect.TabIndex = 9;
+            this.btnConnect.Text = "اتصال ";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // txtBaudRate
             // 
@@ -178,12 +204,12 @@
             // 
             this.lblShowData.AutoSize = true;
             this.lblShowData.BackColor = System.Drawing.Color.Black;
-            this.lblShowData.Font = new System.Drawing.Font("Microsoft YaHei", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblShowData.Font = new System.Drawing.Font("Microsoft YaHei", 38.25F);
             this.lblShowData.ForeColor = System.Drawing.Color.Red;
-            this.lblShowData.Location = new System.Drawing.Point(91, 98);
+            this.lblShowData.Location = new System.Drawing.Point(50, 98);
             this.lblShowData.Name = "lblShowData";
             this.lblShowData.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblShowData.Size = new System.Drawing.Size(180, 48);
+            this.lblShowData.Size = new System.Drawing.Size(248, 66);
             this.lblShowData.TabIndex = 17;
             this.lblShowData.Text = "----------";
             this.lblShowData.Visible = false;
@@ -215,6 +241,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.linkLabel1);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label4);
@@ -227,33 +254,16 @@
             this.groupBox3.TabIndex = 19;
             this.groupBox3.TabStop = false;
             // 
-            // lblVersion
+            // linkLabel1
             // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(6, 66);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(42, 19);
-            this.lblVersion.TabIndex = 14;
-            this.lblVersion.Text = "label4";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(253, 66);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(132, 19);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "وب سایت : www.ptsy.ir";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(532, 66);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(131, 19);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "همراه :  09133539475 ";
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(253, 62);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(72, 19);
+            this.linkLabel1.TabIndex = 18;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "www.ptsy.ir";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label7
             // 
@@ -264,30 +274,33 @@
             this.label7.TabIndex = 17;
             this.label7.Text = "تلفن :  36234238-035";
             // 
-            // btnDisconnect
+            // label6
             // 
-            this.btnDisconnect.Enabled = false;
-            this.btnDisconnect.Image = global::etmadScale.Properties.Resources.close__2_;
-            this.btnDisconnect.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.btnDisconnect.Location = new System.Drawing.Point(145, 227);
-            this.btnDisconnect.Name = "btnDisconnect";
-            this.btnDisconnect.Size = new System.Drawing.Size(133, 37);
-            this.btnDisconnect.TabIndex = 14;
-            this.btnDisconnect.Text = "قطع اتصال";
-            this.btnDisconnect.UseVisualStyleBackColor = true;
-            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(535, 66);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(131, 19);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "همراه :  09133539475 ";
             // 
-            // btnConnect
+            // label4
             // 
-            this.btnConnect.Image = global::etmadScale.Properties.Resources.check__2_;
-            this.btnConnect.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.btnConnect.Location = new System.Drawing.Point(6, 227);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(127, 37);
-            this.btnConnect.TabIndex = 9;
-            this.btnConnect.Text = "اتصال ";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(321, 62);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 19);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "وب سایت : ";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(6, 66);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(42, 19);
+            this.lblVersion.TabIndex = 14;
+            this.lblVersion.Text = "label4";
             // 
             // Form1
             // 
@@ -341,6 +354,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnDisconnect;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
 

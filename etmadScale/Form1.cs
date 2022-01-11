@@ -72,7 +72,7 @@ namespace etmadScale
             }
             else
             {
-                MessageBox.Show("لطفا موارد اجباری را انتخاب کنید ");
+                MessageBox.Show("لطفا موارد اجباری را انتخاب کنید ","error",MessageBoxButtons.OK);
             }
 
 
@@ -200,6 +200,11 @@ namespace etmadScale
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://ptsy.ir/");
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://ptsy.ir/");
         }
